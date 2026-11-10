@@ -27,6 +27,7 @@ const Navbar = () => {
                             <Link href="/my-plan" className="text-[#9CA3AF]">
                                 My Plan
                             </Link>
+                            <Link href="/src/app/listed-workouts/page.tsx">Listed Workouts</Link>
                         </li>
 
                     </ul>
