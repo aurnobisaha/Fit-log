@@ -4,6 +4,7 @@ import { Ilibrary } from '@/types/libraries.type';
 import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
+import SaveButton from '@/components/WorkoutDetails/SaveButton';
 
 interface IWorkoutsDetailsPageProps {
     params: Promise<{
@@ -134,9 +135,7 @@ const WorkoutsDetailsPage = async (props: IWorkoutsDetailsPageProps) => {
                     <div className="card-actions mt-4">
                         <AddtoPlanButton workout={workout}  />
 
-                        <button className="btn btn-outline border-gray-700 font-semibold text-white">
-                            Save for later
-                        </button>
+                 <SaveButton workout={workout} />
                     </div>
 
                 </div>

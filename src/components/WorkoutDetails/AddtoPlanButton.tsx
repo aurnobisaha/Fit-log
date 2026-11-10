@@ -4,6 +4,7 @@
 import { LibraryContext } from "@/context/LibraryContext";
 import { Ilibrary } from "@/types/libraries.type";
 import React, { useContext } from "react";
+import { toast } from "react-toastify";
 
 const AddtoPlanButton = ({ workout }: { workout: Ilibrary }) => {
 
@@ -14,6 +15,7 @@ const AddtoPlanButton = ({ workout }: { workout: Ilibrary }) => {
     const handleAddToPlan = () => {
         console.log("Add to plan button clicked", workout);
         setPlan([...plan, workout]);
+        toast.success(`You have added "${workout.name}" to your add list`);
     };
 
     return (

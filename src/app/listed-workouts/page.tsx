@@ -3,8 +3,9 @@ import React,{useContext} from 'react';
 import { LibraryContext } from '@/context/LibraryContext';
 
 const ListedWorkouts = () => {
-    const  {plan} = useContext(LibraryContext);
-    console.log("Plan from context:", plan);
+    const  {plan, saved} = useContext(LibraryContext);
+    console.log( plan,saved,"Plan from context:","savelist");
+    
     return (
         <div>
             
