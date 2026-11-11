@@ -5,6 +5,7 @@ const LibraryProvider = ({children}: {children: ReactNode}) => {
     const [plan, setPlan] = useState([]);
 const [saved, setSaved] = useState([]);
 //const [message, setMessage] = useState("");
+ const [completed, setCompleted] = useState([]);
 
 const sharedData={
     plan,
@@ -13,6 +14,8 @@ const sharedData={
     setSaved,
     //message,
     //setMessage
+    completed,
+    setCompleted
 }
 return <LibraryContext.Provider value={sharedData}>{children}</LibraryContext.Provider>;
         

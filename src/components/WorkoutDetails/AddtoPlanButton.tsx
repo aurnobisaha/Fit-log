@@ -13,7 +13,16 @@ const AddtoPlanButton = ({ workout }: { workout: Ilibrary }) => {
 
 
     const handleAddToPlan = () => {
-        console.log("Add to plan button clicked", workout);
+          if (plan.some((item: Ilibrary) => item.id === workout.id)) {
+        toast.warning("Workout already added!");
+        return;
+    }
+
+    if (plan.length >= 5) {
+        toast.warning("You can add maximum 5 workouts!");
+        return;
+    }
+        //console.log("Add to plan button clicked", workout);
         setPlan([...plan, workout]);
         toast.success(`You have added "${workout.name}" to your add list`);
     };

@@ -1,31 +1,76 @@
+
+"use client";
+
 import { Ilibrary } from "@/types/libraries.type";
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
+import { LibraryContext } from "@/context/LibraryContext";
+import { toast } from "react-toastify";
 
 interface IlibraryCardprops {
     library: Ilibrary;
+    showActions?: boolean;
+    isPlan?: boolean;
+    horizontal?: boolean;
 }
 
-const LibraryCard = ({ library }: IlibraryCardprops) => {
-    return (
-        <Link
-            href={`/libraries/${library.id}`}
-            className="block bg-[#20242E] border border-gray-800 rounded-xl overflow-hidden hover:border-lime-400 transition duration-300"
-        >
-            {/* Image */}
-            <div className="w-full h-[145px] bg-[#202127]">
-                <Image
-                    src={library.image}
-                    alt={library.name}
-                    width={600}
-                    height={400}
-                    className="w-full h-full object-cover"
-                />
-            </div>
+const LibraryCard = ({
+    library,
+    showActions = false,
+    isPlan = false,
+    horizontal = false
+}: IlibraryCardprops) => {
 
-            <div className="p-4">
-                {/* Muscle Groups */}
+    const {
+        plan,
+        setPlan,
+        saved,
+        setSaved,
+        completed,
+        setCompleted
+    } = useContext(LibraryContext) as any;
+
+    const handleRemove = () => {
+        if (isPlan) {
+            setPlan(plan.filter((item: Ilibrary) => item.id !== library.id));
+        } else {
+            setSaved(saved.filter((item: Ilibrary) => item.id !== library.id));
+        }
+
+        toast.success("Workout removed successfully!");
+    };
+
+    const handleDone = () => {
+        if (completed.some((item: Ilibrary) => item.id === library.id)) {
+            toast.info("Workout already completed!");
+            return;
+        }
+
+        setCompleted([...completed, library]);
+        toast.success("Workout marked as done!");
+    };
+
+    return (
+        <div className={`bg-[#20242E] border border-gray-800 rounded-xl overflow-hidden hover:border-lime-400 transition duration-300 ${horizontal ? "flex flex-col sm:flex-row sm:items-center" : ""}`}>
+
+            <Link
+                href={`/libraries/${library.id}`}
+                className={horizontal ? "block shrink-0" : "block"}
+            >
+                <div className={`${horizontal ? "w-full sm:w-[180px] h-[145px] sm:h-[120px]" : "w-full h-[145px]"} bg-[#202127]`}>
+                    <Image
+                        src={library.image}
+                        alt={library.name}
+                        width={600}
+                        height={400}
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+            </Link>
+
+            <div className={`p-4 ${horizontal ? "flex-1 min-w-0" : ""}`}>
+
                 <div className="flex flex-wrap gap-2 mb-2">
                     {library.muscleGroups.map((muscle: string, index: number) => (
                         <span
@@ -37,16 +82,18 @@ const LibraryCard = ({ library }: IlibraryCardprops) => {
                     ))}
                 </div>
 
-                {/* Workout Name */}
-                <h2 className="text-white text-sm font-extrabold uppercase mb-1">
-                    {library.name}
-                </h2>
+                <Link href={`/libraries/${library.id}`}>
+                    <h2 className="text-white text-sm font-extrabold uppercase mb-1">
+                        {library.name}
+                    </h2>
+                </Link>
 
-                {/* Equipment */}
-                <p className="text-[#9CA3AF] text-xs mb-3">{library.equipment}</p>
+                <p className="text-[#9CA3AF] text-xs mb-3">
+                    {library.equipment}
+                </p>
 
-                {/* Workout Details */}
-                <div className="border-t border-gray-700 pt-3 flex items-center gap-4 text-gray-400 text-xs">
+                <div className="border-t border-gray-700 pt-3 flex flex-wrap items-center gap-4 text-gray-400 text-xs">
+
                     {/* Duration */}
                     <span className="flex items-center gap-1.5">
                         <svg
@@ -98,10 +145,45 @@ const LibraryCard = ({ library }: IlibraryCardprops) => {
                         </svg>
                         {library.rating}
                     </span>
+
                 </div>
+
             </div>
-        </Link>
+
+            {showActions && (
+                <div className={`flex items-center gap-2 p-4 ${horizontal ? "sm:pr-5 sm:pl-0 shrink-0" : "pt-0"}`}>
+
+                    <Link
+                        href={`/libraries/${library.id}`}
+                        className="btn btn-sm bg-white/10 text-white border-none"
+                    >
+                        View Details
+                    </Link>
+
+                    {isPlan && (
+                        <button
+                            onClick={handleDone}
+                            className="btn btn-sm  bg-lime-400 text-black border-none hover:bg-lime-300 "
+                        >
+                            Mark as Done
+                        </button>
+                    )}
+
+                    <button
+                        onClick={handleRemove}
+                        className="btn btn-ghost btn-error text-white"
+                    >
+                        X
+                    </button>
+
+                </div>
+            )}
+
+        </div>
     );
 };
 
 export default LibraryCard;
+
+
+

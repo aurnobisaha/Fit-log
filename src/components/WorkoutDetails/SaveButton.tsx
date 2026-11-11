@@ -13,6 +13,10 @@ const SaveButton = ({ workout }: { workout: Ilibrary }) => {
 
 
     const handleSavelist = () => {
+         if (saved.some((item: Ilibrary) => item.id === workout.id)) {
+        toast.warning("Workout already saved!");
+        return;
+    }
         console.log("Save button clicked", workout);
         setSaved([...saved, workout]);
         toast.success(`You have added "${workout.name}" to your save list`);

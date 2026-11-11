@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useContext, useState } from 'react';
@@ -27,30 +28,47 @@ const EmptyState = () => (
 
 const ListedWorkouts = () => {
 
-    const { plan, saved } = useContext(LibraryContext);
+    const { plan, saved } = useContext(LibraryContext) as any;
 
     const [activeTab, setActiveTab] = useState<'plan' | 'saved'>('plan');
+
+    const [sortBy, setSortBy] = useState<"duration" | "calories" | "rating">("duration");
 
     const totalExercises = plan.length;
 
     const totalMinutes = plan.reduce(
-        (total, item) => total + item.duration, 0
+        (total: number, item: Ilibrary) => total + item.duration, 0
     );
 
     const totalCalories = plan.reduce(
-        (total, item) => total + item.caloriesBurned, 0
+        (total: number, item: Ilibrary) => total + item.caloriesBurned, 0
     );
+
+    const sortWorkouts = (workouts: Ilibrary[]) => {
+        return [...workouts].sort((a, b) => {
+            if (sortBy === "duration") {
+                return a.duration - b.duration;
+            }
+
+            if (sortBy === "calories") {
+                return a.caloriesBurned - b.caloriesBurned;
+            }
+
+            return a.rating - b.rating;
+        });
+    };
 
     return (
         <div className="container mx-auto px-4 py-[60px]">
-            <div>
-    <h2 className="text-3xl font-bold text-white">MY PLAN</h2>
-    <p className="mt-2 text-sm text-[#8A92A0]">
-        Track your workouts and keep moving towards your fitness goals.
-    </p>
-</div>
 
-            
+            <div>
+                <h2 className="text-3xl font-bold text-white">MY PLAN</h2>
+
+                <p className="mt-2 text-sm text-[#8A92A0]">
+                    Cap of five lifts for today. Finish them, then load more.
+                </p>
+            </div>
+
             <div className="mt-4 grid grid-cols-3 rounded-2xl border border-white/10 bg-[#232732] p-6">
 
                 <div>
@@ -62,83 +80,107 @@ const ListedWorkouts = () => {
 
                 <div className="pl-6">
                     <p className="text-sm text-gray-400">Minutes</p>
-                    <p className="text-4xl font-bold text-white">
+                    <p className="text-4xl font-bold text-[#FFFFFF]">
                         {totalMinutes}
                     </p>
                 </div>
 
                 <div className="pl-6">
                     <p className="text-sm text-gray-400">Calories</p>
-                    <p className="text-4xl font-bold text-white">
+                    <p className="text-4xl font-bold text-[#FFFFFF]">
                         {totalCalories}
                     </p>
                 </div>
 
             </div>
 
+            {/* Tabs and Sort By */}
+            <div className="mt-8 flex items-center justify-between gap-4">
 
-            
-            <div className="mt-8 flex w-fit rounded-xl border border-white/10 bg-white/5 p-1 text-sm">
-                <button
-                    onClick={() => setActiveTab('plan')}
-                    className={`rounded-lg px-4 py-2 ${activeTab === 'plan' ? 'bg-white/10 font-bold text-[#FFFFFF]' : 'text-[#8A92A0]'}`}
-                >
-                    Today&apos;s Plan
-                </button>
+                <div className="flex w-fit rounded-xl border border-white/10 bg-white/5 p-1 text-sm shrink-0">
 
-                <button
-                    onClick={() => setActiveTab('saved')}
-                    className={`rounded-lg px-4 py-2 ${activeTab === 'saved' ? 'bg-white/10 font-bold text-[#FFFFFF]' : 'text-[#8A92A0]'}`}
-                >
-                    Saved
-                </button>
+                    <button
+                        onClick={() => setActiveTab('plan')}
+                        className={`rounded-lg px-4 py-2 ${activeTab === 'plan' ? 'bg-white/10 font-bold text-[#FFFFFF]' : 'text-[#8A92A0]'}`}
+                    >
+                        Today&apos;s Plan
+                    </button>
+
+                    <button
+                        onClick={() => setActiveTab('saved')}
+                        className={`rounded-lg px-4 py-2 ${activeTab === 'saved' ? 'bg-white/10 font-bold text-[#FFFFFF]' : 'text-[#8A92A0]'}`}
+                    >
+                        Saved
+                    </button>
+
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+
+                    <span className="text-xs text-[#8A92A0] whitespace-nowrap">
+                        Sort By
+                    </span>
+
+                    <select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value as "duration" | "calories" | "rating")}
+                        className="select select-sm bg-[#151820] border border-white/10 text-white rounded-lg"
+                    >
+                        <option value="duration">Duration</option>
+                        <option value="calories">Calories</option>
+                        <option value="rating">Rating</option>
+                    </select>
+
+                </div>
+
             </div>
-
 
             {/* Today's Plan list */}
             {activeTab === 'plan' && (
                 <div className="mt-6 min-h-[300px] rounded-2xl border border-white/10 bg-white/5 p-6">
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 gap-3">
 
                         {
                             plan.length > 0 ?
-                                plan.map((item: Ilibrary) => {
-                                    return (
-                                        <LibraryCard
-                                            key={item.id}
-                                            library={item}
-                                        />
-                                    );
-                                })
+                                sortWorkouts(plan).map((item: Ilibrary) => (
+                                    <LibraryCard
+                                        key={item.id}
+                                        library={item}
+                                        showActions={true}
+                                        isPlan={true}
+                                        horizontal={true}
+                                    />
+                                ))
                                 : <EmptyState />
                         }
 
                     </div>
+
                 </div>
             )}
-
 
             {/* Saved list */}
             {activeTab === 'saved' && (
                 <div className="mt-6 min-h-[300px] rounded-2xl border border-white/10 bg-white/5 p-6">
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 gap-3">
 
                         {
                             saved.length > 0 ?
-                                saved.map((item: Ilibrary) => {
-                                    return (
-                                        <LibraryCard
-                                            key={item.id}
-                                            library={item}
-                                        />
-                                    );
-                                })
+                                sortWorkouts(saved).map((item: Ilibrary) => (
+                                    <LibraryCard
+                                        key={item.id}
+                                        library={item}
+                                        showActions={true}
+                                        horizontal={true}
+                                    />
+                                ))
                                 : <EmptyState />
                         }
 
                     </div>
+
                 </div>
             )}
 
@@ -147,6 +189,11 @@ const ListedWorkouts = () => {
 };
 
 export default ListedWorkouts;
+
+
+
+
+
 
 
 
