@@ -1,10 +1,13 @@
-
-import React from 'react';
+'use client';
+import React,{useContext} from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import logo from "@/assets/logo.png";
+import { LibraryContext } from '@/context/LibraryContext';
 
 const Navbar = () => {
+    const { plan, saved } = useContext(LibraryContext);
+
     return (
         <div className="navbar min-h-[72px] bg-[#000000] border-b border-[#1C1F26] px-4 sm:px-6 text-[#FFFFFF]">
             <div className="navbar-start">
@@ -27,7 +30,7 @@ const Navbar = () => {
                             <Link href="/my-plan" className="text-[#9CA3AF]">
                                 My Plan
                             </Link>
-                            <Link href="/src/app/listed-workouts/page.tsx">Listed Workouts</Link>
+                            
                         </li>
 
                     </ul>
@@ -69,7 +72,7 @@ const Navbar = () => {
                     <span className="text-xs text-[#D1D5DB]">Plan</span>
 
                     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#C2F800] text-[10px] font-bold text-[#000000]">
-                        0
+                        {plan.length}
                     </span>
                 </Link>
 
@@ -78,7 +81,7 @@ const Navbar = () => {
                     <span className="text-xs text-[#9CA3AF]">Saved</span>
 
                     <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#2D313B] text-[10px] text-[#9CA3AF]">
-                        0
+                          {saved.length}
                     </span>
                 </Link>
 

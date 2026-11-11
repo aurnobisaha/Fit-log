@@ -10,28 +10,7 @@ import ListedWorkouts from '@/app/listed-workouts/page';
 const MyPlanPage = () => {
     return (
         <div className="container mx-auto  py-[60px] px-6">
-            <h2 className="text-2xl font-black text-[#FFFFFF] mb-1 uppercase">
-                MY PLAN
-            </h2>
-            <p className="text-[#8A92A0] text-sm ">
-                Cap of five lifts for today. Finish them, then load more.
-            </p>
-            <div className="mt-8 grid grid-cols-3 rounded-2xl border border-white/10 bg-white/5 p-6">
-  <div>
-    <p className="text-sm text-[#8A92A0]">Exercises</p>
-    <p className="text-4xl font-black text-[#CCFF00]">2</p>
-  </div>
-
-  <div className=" pl-6">
-    <p className="text-sm text-[#8A92A0]">Minutes</p>
-    <p className="text-4xl font-black text-[#FFFFFF]">23</p>
-  </div>
-
-  <div className="pl-6">
-    <p className="text-sm text-[#8A92A0]">Calories</p>
-    <p className="text-4xl font-black text-[#FFFFFF]">190</p>
-  </div>
-</div>
+ 
             <ListedWorkouts />
         </div>
     );
