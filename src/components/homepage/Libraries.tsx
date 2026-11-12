@@ -2,18 +2,9 @@
 import React from "react";
 import LibraryCard from "../shared/libraryCard";
 import { Ilibrary } from "@/types/libraries.type";
+import libraryData from "../../../public/Workouts.json";
 
-const getDatas = async () => {
-    
-    const response = await fetch(`http://localhost:3000/Workouts.json`);
-    const data = await response.json();
-    return data;
-
-};
-
-const Libraries = async () => {
-    const libraryData = await getDatas();
-
+const Libraries = () => {
     return (
         <section className="container mx-auto max-w-6xl my-16 px-4">
 
@@ -40,6 +31,7 @@ const Libraries = async () => {
 };
 
 export default Libraries;
+
 
 
 
