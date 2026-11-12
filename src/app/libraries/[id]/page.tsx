@@ -13,7 +13,8 @@ interface IWorkoutsDetailsPageProps {
 }
 
 const getDatas = async (): Promise<Ilibrary[]> => {
-    const response = await fetch("http://localhost:3000/Workouts.json");
+
+    const response = await fetch(`http://localhost:3000/Workouts.json`);
 
     if (!response.ok) {
         throw new Error("Failed to fetch workout data");
@@ -133,9 +134,8 @@ const WorkoutsDetailsPage = async (props: IWorkoutsDetailsPageProps) => {
                     </ol>
 
                     <div className="card-actions mt-4">
-                        <AddtoPlanButton workout={workout}  />
-
-                 <SaveButton workout={workout} />
+                        <AddtoPlanButton workout={workout} />
+                        <SaveButton workout={workout} />
                     </div>
 
                 </div>
@@ -145,3 +145,4 @@ const WorkoutsDetailsPage = async (props: IWorkoutsDetailsPageProps) => {
 };
 
 export default WorkoutsDetailsPage;
+

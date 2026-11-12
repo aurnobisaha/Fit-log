@@ -4,9 +4,11 @@ import LibraryCard from "../shared/libraryCard";
 import { Ilibrary } from "@/types/libraries.type";
 
 const getDatas = async () => {
-    const response = await fetch("http://localhost:3000/Workouts.json");
+    
+    const response = await fetch(`http://localhost:3000/Workouts.json`);
     const data = await response.json();
     return data;
+
 };
 
 const Libraries = async () => {
