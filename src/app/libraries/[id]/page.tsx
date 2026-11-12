@@ -14,7 +14,15 @@ interface IWorkoutsDetailsPageProps {
 
 const getDatas = async (): Promise<Ilibrary[]> => {
 
-    const response = await fetch(`http://localhost:3000/Workouts.json`);
+    const baseUrl =
+        process.env.DEPLOY_PRIME_URL ||
+        process.env.URL ||
+        'http://localhost:3000';
+
+    const response = await fetch(
+        new URL('/Workouts.json', baseUrl),
+        { cache: 'no-store' }
+    );
 
     if (!response.ok) {
         throw new Error("Failed to fetch workout data");
@@ -145,4 +153,5 @@ const WorkoutsDetailsPage = async (props: IWorkoutsDetailsPageProps) => {
 };
 
 export default WorkoutsDetailsPage;
+
 
